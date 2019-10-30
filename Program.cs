@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using HandBookApi.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +48,9 @@ namespace HandBookApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                   webBuilder.UseUrls("http://localhost:5000;http://0.0.0.0:5000");
                     webBuilder.UseStartup<Startup>();
+                    
                 });
     }
 }
