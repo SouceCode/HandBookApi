@@ -8,4 +8,5 @@ IDE为Microsoft VS Code，开发平台为C# WEB API，借助Microsoft VS Code集
 .NET Core版本: .支持3.0及以上版本
 Microsoft VS Code版本：支持Microsoft VS Code
 相关资料
+使用 NSwagStudio 生成代码  https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-3.0&tabs=visual-studio
 技术交流群：308522976
