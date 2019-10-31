@@ -11,11 +11,11 @@ namespace HandBookApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Game_SettingController : ControllerBase
+    public class Game_SettingsController : ControllerBase
     {
         private readonly HandBookContext _context;
 
-        public Game_SettingController(HandBookContext context)
+        public Game_SettingsController(HandBookContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace HandBookApi.Controllers
 
         // GET: api/Game_Setting/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game_Setting>> GetGame_Setting(long id)
+        public async Task<ActionResult<Game_Setting>> GetGame_Settings(long id)
         {
             var game_Setting = await _context.Game_Settings.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace HandBookApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame_Setting(long id, Game_Setting game_Setting)
+        public async Task<IActionResult> PutGame_Settings(long id, Game_Setting game_Setting)
         {
             if (id != game_Setting.Id)
             {
@@ -77,17 +77,17 @@ namespace HandBookApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Game_Setting>> PostGame_Setting(Game_Setting game_Setting)
+        public async Task<ActionResult<Game_Setting>> PostGame_Settings(Game_Setting game_Setting)
         {
             _context.Game_Settings.Add(game_Setting);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame_Setting", new { id = game_Setting.Id }, game_Setting);
+            return CreatedAtAction("GetGame_Settings", new { id = game_Setting.Id }, game_Setting);
         }
 
         // DELETE: api/Game_Setting/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Game_Setting>> DeleteGame_Setting(long id)
+        public async Task<ActionResult<Game_Setting>> DeleteGame_Settings(long id)
         {
             var game_Setting = await _context.Game_Settings.FindAsync(id);
             if (game_Setting == null)
