@@ -66,7 +66,7 @@ namespace HandBookApi.Controllers
             int pageSize = size??10;//页面记录数
             int TotolRecord = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking().ToList<Base_Book>().Count;
            //总页码
-           int TotalPage=TotolRecord/pageSize;
+           int TotalPage=(TotolRecord-1)/pageSize +1;
            return  TotalPage ;
         }
   
