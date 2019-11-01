@@ -26,9 +26,12 @@ namespace HandBookApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
-             services.AddDbContext<HandBookContext>(options =>
-            options.UseSqlite(Configuration.GetConnectionString("HandBookContext1")));
+            //  services.AddDbContext<HandBookContext>(options =>
+            // options.UseSqlite(Configuration.GetConnectionString("HandBookContext1")));
+            services.AddDbContextPool<HandBookContext>(builder=> builder.UseSqlite(Configuration.GetConnectionString("HandBookContext1")));
+
             #region  中间件
             // Register the Swagger services
               services.AddSwaggerDocument();
