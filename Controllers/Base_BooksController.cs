@@ -41,6 +41,37 @@ namespace HandBookApi.Controllers
             return base_Book;
         }
 
+
+
+
+        #region 自定义 Action
+           // GET: api/Base_Books/GetBase_BooksPageData/
+        [HttpGet]
+         [Route("GetBase_BooksPageData")]
+        public IEnumerable<Base_Book> GetBase_BooksPageData(int? pageindex,string sqlstr, int? size)
+        {
+            int pageSize = size??10;//页面记录数
+            int pageNumber =  pageindex ?? 1;//页码
+            List<Base_Book> base_Books = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking()
+            .Skip(pageSize * pageNumber)
+            .Take(pageSize)
+            .ToList<Base_Book>();
+            return base_Books;
+        }
+      // GET: api/Base_Books/GetBase_BooksPageCount/
+        [HttpGet]
+         [Route("GetBase_BooksPageCount")]
+         public int GetBase_BooksPageCount(string sqlstr, int? size)
+        {
+            int pageSize = size??10;//页面记录数
+            int TotolRecord = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking().ToList<Base_Book>().Count;
+           //总页码
+           int TotalPage=TotolRecord/pageSize;
+           return  TotalPage ;
+        }
+  
+        #endregion
+
         // PUT: api/Base_Books/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
