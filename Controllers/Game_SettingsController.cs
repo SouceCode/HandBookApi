@@ -40,7 +40,33 @@ namespace HandBookApi.Controllers
 
             return game_Setting;
         }
-
+ #region 自定义 Action
+           // GET: api/Game_Setting/GetGame_SettingsPageData/
+        [HttpGet]
+         [Route("GetGame_SettingsPageData")]
+        public IEnumerable<Game_Setting> GetGame_SettingsPageData(int? pageindex,string sqlstr, int? size)
+        {
+            int pageSize = size??10;//页面记录数
+            int pageNumber =  pageindex ?? 1;//页码
+            List<Game_Setting> game_Settings = _context.Game_Settings.FromSqlRaw(sqlstr).AsNoTracking()
+            .Skip(pageSize * pageNumber)
+            .Take(pageSize)
+            .ToList<Game_Setting>();
+            return game_Settings;
+        }
+      // GET: api/Game_Setting/GetGame_SettingsPageCount/
+        [HttpGet]
+         [Route("GetGame_SettingsPageCount")]
+         public int GetGame_SettingsPageCount(string sqlstr, int? size)
+        {
+            int pageSize = size??10;//页面记录数
+            int TotolRecord = _context.Game_Settings.FromSqlRaw(sqlstr).AsNoTracking().ToList<Game_Setting>().Count;
+           //总页码
+           int TotalPage=(TotolRecord-1)/pageSize +1;
+           return  TotalPage ;
+        }
+  
+        #endregion
         // PUT: api/Game_Setting/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
