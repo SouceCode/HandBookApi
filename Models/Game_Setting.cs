@@ -21,5 +21,7 @@ namespace HandBookApi.Models
         public string ReMark { get; set; }
          [Display(Name = "创建时间")]
         public DateTime CreateDate { get; set; }
+         [Display(Name = "截止时间")]
+        public DateTime DeadLine { get; set; }
     }
 }
