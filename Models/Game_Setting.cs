@@ -23,5 +23,8 @@ namespace HandBookApi.Models
         public DateTime CreateDate { get; set; }
          [Display(Name = "截止时间")]
         public DateTime DeadLine { get; set; }
+         [Display(Name = "试玩类型")]
+        public TryTypeEnum TryType { get; set; }
+        
     }
 }

@@ -3,14 +3,16 @@ using System;
 using HandBookApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HandBookApi.Migrations
 {
     [DbContext(typeof(HandBookContext))]
-    partial class HandBookContextModelSnapshot : ModelSnapshot
+    [Migration("20191104022951_AddGame_Setting_TryType")]
+    partial class AddGame_Setting_TryType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
