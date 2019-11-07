@@ -25,6 +25,8 @@ namespace HandBookApi.Models
         public DateTime DeadLine { get; set; }
          [Display(Name = "试玩类型")]
         public TryTypeEnum TryType { get; set; }
+          [Display(Name = "设备要求")]
+        public DevicesEnum Devices { get; set; }
         
     }
 }
