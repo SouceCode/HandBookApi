@@ -27,6 +27,8 @@ namespace HandBookApi.Models
         public TryTypeEnum TryType { get; set; }
           [Display(Name = "设备要求")]
         public DevicesEnum Devices { get; set; }
+          [Display(Name = "是否领奖")]
+         public bool IsCompleted { get; set; }
         
     }
 }
