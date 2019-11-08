@@ -37,6 +37,17 @@ namespace HandBookApi
             // Register the Swagger services
               services.AddSwaggerDocument();
               #endregion
+              #region 配置 Cors
+              services.AddCors(options =>
+        {
+            options.AddPolicy("_myAllowSpecificOrigins",
+            builder =>
+            {
+                 builder.AllowAnyOrigin(); //2.可用
+            });
+        });
+      
+              #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +57,9 @@ namespace HandBookApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+#region 启用Cors
+ app.UseCors("_myAllowSpecificOrigins"); 
+#endregion
             app.UseHttpsRedirection();
 
             app.UseRouting();
