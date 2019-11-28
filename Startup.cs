@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using HandBookApi.Models;
+using HandBookApi.Job;
+
 namespace HandBookApi
 {
     public class Startup
@@ -48,6 +50,10 @@ namespace HandBookApi
         });
       
               #endregion
+
+
+           //定时任务的注入
+           services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, EmailJob>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
