@@ -16,5 +16,7 @@ namespace HandBookApi.Models
         public string ReMark { get; set; }
             [Display(Name = "创建时间")]
         public DateTime CreateDate { get; set; }
+             [Display(Name = "用户Id")]
+        public string UsersId{ get; set; }
     }
 }

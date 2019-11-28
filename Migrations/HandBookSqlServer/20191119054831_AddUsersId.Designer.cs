@@ -4,14 +4,16 @@ using HandBookApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HandBookApi.Migrations.HandBookSqlServer
 {
     [DbContext(typeof(HandBookSqlServerContext))]
-    partial class HandBookSqlServerContextModelSnapshot : ModelSnapshot
+    [Migration("20191119054831_AddUsersId")]
+    partial class AddUsersId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -29,6 +29,8 @@ namespace HandBookApi.Models
         public DevicesEnum Devices { get; set; }
           [Display(Name = "是否领奖")]
          public bool IsCompleted { get; set; }
+         [Display(Name = "用户Id")]
+        public string UsersId{ get; set; }
         
     }
 }
