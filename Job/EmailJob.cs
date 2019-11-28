@@ -26,7 +26,7 @@ namespace HandBookApi.Job
                         //定时任务业务逻辑,比如:
                         string value = DateTime.Now.ToString();
                         StreamWriter sw = new StreamWriter(@"D:\1.txt", true);//true有新数据继续写,false后边的数据覆盖前边的
-                        sw.WriteLine("执行时间： " + value;
+                        sw.WriteLine("执行时间： " + value);
                         sw.Flush();
                         sw.Close();
 
