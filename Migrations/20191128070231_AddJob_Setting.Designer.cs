@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HandBookApi.Migrations
 {
     [DbContext(typeof(HandBookContext))]
-    [Migration("20191128013318_AddJob_Setting")]
+    [Migration("20191128070231_AddJob_Setting")]
     partial class AddJob_Setting
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,32 @@ namespace HandBookApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Game_Settings");
+                });
+
+            modelBuilder.Entity("HandBookApi.Models.Job_Setting", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsClose")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReMark")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Job_Settings");
                 });
 
             modelBuilder.Entity("HandBookApi.Models.Users", b =>

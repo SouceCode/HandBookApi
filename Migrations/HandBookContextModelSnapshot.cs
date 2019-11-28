@@ -80,6 +80,32 @@ namespace HandBookApi.Migrations
                     b.ToTable("Game_Settings");
                 });
 
+            modelBuilder.Entity("HandBookApi.Models.Job_Setting", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsClose")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReMark")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Job_Settings");
+                });
+
             modelBuilder.Entity("HandBookApi.Models.Users", b =>
                 {
                     b.Property<long>("Id")
