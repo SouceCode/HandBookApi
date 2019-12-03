@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HandBookApi.Migrations
 {
     [DbContext(typeof(HandBookContext))]
-    [Migration("20191128070231_AddJob_Setting")]
+    [Migration("20191129053309_AddJob_Setting")]
     partial class AddJob_Setting
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
