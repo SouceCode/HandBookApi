@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly HandBookSqlServerContext _context;
+        private readonly HandBookContext _context;
 
-        public UsersController(HandBookSqlServerContext context)
+        public UsersController(HandBookContext context)
         {
             _context = context;
         }
@@ -44,15 +44,50 @@ namespace HandBookApi.Controllers
            // GET: api/User/GetUsersPageData/
         [HttpGet]
          [Route("GetUsersPageData")]
-        public IEnumerable<Users> GetUsersPageData(int? pageindex,string sqlstr, int? size)
+        public IEnumerable<Users> GetUsersPageData(int? pageindex,string table,string where ,string orderby, int? size)
         {
-            int pageSize = size??10;//页面记录数
+          
+  if (_context.Database.IsSqlServer())
+            {
+          /***
+            *由于EF6.0不支持SQLSERVER 2008 R2
+            *现分页采用原生的ADO.NET方式来实现
+            *等效于
+            *
+            ***/
+            int pageSize = size ?? 10;//页面记录数
+            int pageNumber = pageindex ?? 1;//页码
+            
+              if (string.IsNullOrEmpty(orderby))
+            {
+                orderby = " order by id asc";
+            }
+            string sqlstr = @"select * from (select row_number() over ( "+orderby+" ) as rownum,* from " + table + @"  With(NOLOCK)   " + where + ")A where rownum >" + pageSize * (pageNumber) + " and rownum <= " + pageSize * (pageNumber+1);
+            List<Users> users = _context.Users.FromSqlRaw(sqlstr).AsNoTracking()
+
+            .ToList<Users>();
+            return users;
+               }
+            else if(_context.Database.IsSqlite())
+            {
+
+  int pageSize = size??10;//页面记录数
             int pageNumber =  pageindex ?? 1;//页码
-            List<Users> game_Settings = _context.Users.FromSqlRaw(sqlstr).AsNoTracking()
+             if (string.IsNullOrEmpty(orderby))
+                {
+                    orderby = " order by id asc";
+                }
+
+                string sqlstr = "select * from " + table +" "+ where + orderby;
+            List<Users> users = _context.Users.FromSqlRaw(sqlstr).AsNoTracking()
             .Skip(pageSize * pageNumber)
             .Take(pageSize)
             .ToList<Users>();
-            return game_Settings;
+            return users;
+             }else{
+
+                  return new   List<Users>();
+            }
         }
       // GET: api/User/GetUsersPageCount/
         [HttpGet]

@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class Base_BooksController : ControllerBase
     {
-        private readonly HandBookSqlServerContext _context;
+        private readonly HandBookContext _context;
 
-        public Base_BooksController(HandBookSqlServerContext context)
+        public Base_BooksController(HandBookContext context)
         {
             _context = context;
         }
@@ -45,18 +45,56 @@ namespace HandBookApi.Controllers
 
 
         #region 自定义 Action
-           // GET: api/Base_Books/GetBase_BooksPageData/
+      
+         //GET: api/Base_Books/GetBase_BooksPageData/
         [HttpGet]
          [Route("GetBase_BooksPageData")]
-        public IEnumerable<Base_Book> GetBase_BooksPageData(int? pageindex,string sqlstr, int? size)
+        public IEnumerable<Base_Book> GetBase_BooksPageData(int? pageindex,string table,string where ,string orderby, int? size)
         {
-            int pageSize = size??10;//页面记录数
-            int pageNumber =  pageindex ?? 1;//页码
-            List<Base_Book> base_Books = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking()
-            .Skip(pageSize * pageNumber)
-            .Take(pageSize)
-            .ToList<Base_Book>();
-            return base_Books;
+
+            if (_context.Database.IsSqlServer())
+            {
+                /***
+                          *由于EF6.0不支持SQLSERVER 2008 R2
+                          *现分页采用原生的ADO.NET方式来实现
+                          *等效于
+                          *
+                          ***/
+                int pageSize = size ?? 10;//页面记录数
+                int pageNumber = pageindex ?? 1;//页码
+
+                if (string.IsNullOrEmpty(orderby))
+                {
+                    orderby = " order by id asc";
+                }
+                string sqlstr = @"select * from (select row_number() over ( " + orderby + " ) as rownum,* from " + table + @"  With(NOLOCK)   " + where + ")A where rownum >" + pageSize * (pageNumber) + " and rownum <= " + pageSize * (pageNumber + 1);
+                List<Base_Book> base_Books = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking()
+
+                .ToList<Base_Book>();
+                return base_Books;
+            }
+            else if (_context.Database.IsSqlite())
+            {
+                int pageSize = size ?? 10;//页面记录数
+                int pageNumber = pageindex ?? 1;//页码
+                if (string.IsNullOrEmpty(orderby))
+                {
+                    orderby = " order by id asc";
+                }
+
+                string sqlstr = "select * from " + table +" "+where + orderby;
+                List<Base_Book> base_Books = _context.Base_Books.FromSqlRaw(sqlstr).AsNoTracking()
+                .Skip(pageSize * pageNumber)
+                .Take(pageSize)
+                .ToList<Base_Book>();
+                return base_Books;
+            }
+            else
+            {
+
+
+                return new List<Base_Book>();
+            }
         }
       // GET: api/Base_Books/GetBase_BooksPageCount/
         [HttpGet]

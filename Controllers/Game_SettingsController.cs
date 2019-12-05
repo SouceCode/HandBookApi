@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class Game_SettingsController : ControllerBase
     {
-        private readonly HandBookSqlServerContext _context;
+        private readonly HandBookContext _context;
 
-        public Game_SettingsController(HandBookSqlServerContext context)
+        public Game_SettingsController(HandBookContext context)
         {
             _context = context;
         }
@@ -41,18 +41,56 @@ namespace HandBookApi.Controllers
             return game_Setting;
         }
  #region 自定义 Action
-           // GET: api/Game_Setting/GetGame_SettingsPageData/
+        
+        //GET: api/Game_Setting/GetGame_SettingsPageData/
         [HttpGet]
          [Route("GetGame_SettingsPageData")]
-        public IEnumerable<Game_Setting> GetGame_SettingsPageData(int? pageindex,string sqlstr, int? size)
+        public IEnumerable<Game_Setting> GetGame_SettingsPageData(int? pageindex,string table,string where ,string orderby, int? size)
         {
-            int pageSize = size??10;//页面记录数
-            int pageNumber =  pageindex ?? 1;//页码
-            List<Game_Setting> game_Settings = _context.Game_Settings.FromSqlRaw(sqlstr).AsNoTracking()
-            .Skip(pageSize * pageNumber)
-            .Take(pageSize)
-            .ToList<Game_Setting>();
-            return game_Settings;
+
+            if (_context.Database.IsSqlServer())
+            {
+                /***
+                          *由于EF6.0不支持SQLSERVER 2008 R2
+                          *现分页采用原生的ADO.NET方式来实现
+                          *等效于
+                          *
+                          ***/
+                int pageSize = size ?? 10;//页面记录数
+                int pageNumber = pageindex ?? 1;//页码
+
+                if (string.IsNullOrEmpty(orderby))
+                {
+                    orderby = " order by id asc";
+                }
+                string sqlstr = @"select * from (select row_number() over ( " + orderby + " ) as rownum,* from " + table + @"  With(NOLOCK)   " + where + ")A where rownum >" + pageSize * (pageNumber) + " and rownum <= " + pageSize * (pageNumber + 1);
+                List<Game_Setting> game_Settings = _context.Game_Settings.FromSqlRaw(sqlstr).AsNoTracking()
+
+                .ToList<Game_Setting>();
+                return game_Settings;
+
+            }
+            else if(_context.Database.IsSqlite())
+            {
+
+                int pageSize = size ?? 10;//页面记录数
+                int pageNumber = pageindex ?? 1;//页码
+                if (string.IsNullOrEmpty(orderby))
+                {
+                    orderby = " order by id asc";
+                }
+
+                string sqlstr = "select * from " + table +" "+ where + orderby;
+                List<Game_Setting> game_Settings = _context.Game_Settings.FromSqlRaw(sqlstr).AsNoTracking()
+                .Skip(pageSize * pageNumber)
+                .Take(pageSize)
+                .ToList<Game_Setting>();
+                return game_Settings;
+
+            }else{
+
+                  return new  List<Game_Setting>();
+            }
         }
       // GET: api/Game_Setting/GetGame_SettingsPageCount/
         [HttpGet]
