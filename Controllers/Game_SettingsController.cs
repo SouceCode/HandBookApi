@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class Game_SettingsController : ControllerBase
     {
-        private readonly HandBookContext _context;
+        private readonly HandBookSqlServerContext _context;
 
-        public Game_SettingsController(HandBookContext context)
+        public Game_SettingsController(HandBookSqlServerContext context)
         {
             _context = context;
         }

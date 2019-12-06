@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class Job_SettingsController : ControllerBase
     {
-        private readonly HandBookContext _context;
+        private readonly HandBookSqlServerContext _context;
 
-        public Job_SettingsController(HandBookContext context)
+        public Job_SettingsController(HandBookSqlServerContext context)
         {
             _context = context;
         }

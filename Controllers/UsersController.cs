@@ -13,9 +13,9 @@ namespace HandBookApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly HandBookContext _context;
+        private readonly HandBookSqlServerContext _context;
 
-        public UsersController(HandBookContext context)
+        public UsersController(HandBookSqlServerContext context)
         {
             _context = context;
         }
