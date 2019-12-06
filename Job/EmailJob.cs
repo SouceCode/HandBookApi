@@ -100,20 +100,20 @@ namespace HandBookApi.Job
                             {//是否开启定时任务
 
                                 //定时任务业务逻辑,比如:
-                                string value = DateTime.Now.ToString();
-                                StreamWriter sw = new StreamWriter(@"C:\HandBookApi\log\1.txt", true);//true有新数据继续写,false后边的数据覆盖前边的
-                                sw.WriteLine("执行时间： " + value);
-                                sw.Flush();
-                                sw.Close();
+                                // string value = DateTime.Now.ToString();
+                                // StreamWriter sw = new StreamWriter(@"C:\HandBookApi\log\1.txt", true);//true有新数据继续写,false后边的数据覆盖前边的
+                                // sw.WriteLine("执行时间： " + value);
+                                // sw.Flush();
+                                // sw.Close();
 
 
                                 //满足某种条件执行 比如每天凌晨执行
                                 var time = DateTime.Now.ToString("HH:mm:ss");
-                                // if ("00:01:00" == time)
-                                // {
+                                if ("00:01:00" == time)
+                                {
                                     //业务逻辑 
                                     string table = " Game_Settings gs";
-                                    string where = " where 1=1 And devices=1  And IsCompleted=0 And DealLine>"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                    string where = " where 1=1 And devices=1  And IsCompleted=0 And DeadLine>'"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"'";
                                     //devices：0电脑1手机
                                     //IsCompleted=0 是否领奖：0否1是
                                     string orderby = "    order by deadLine asc ";
@@ -211,7 +211,7 @@ namespace HandBookApi.Job
 
                                     // Console.WriteLine(DateTime.Now + ":进入这里了");
 
-                                // }
+                                }
                             }
                         }
 
@@ -224,7 +224,7 @@ namespace HandBookApi.Job
                     }
                     catch (Exception exp)
                     {
-                        logger.LogError(exp.Message);
+                        logger.LogError(exp.Message+exp.StackTrace);
                         //错误处理
                     }
 
