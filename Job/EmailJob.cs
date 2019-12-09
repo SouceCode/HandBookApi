@@ -185,8 +185,11 @@ namespace HandBookApi.Job
 
 
                                     var message = new MimeMessage();
+                                    // //接受方
+                                    // message.To.Add(new MailboxAddress(Configuration["To:Nick"], Configuration["To:Address"]));
                                     //接受方
-                                    message.To.Add(new MailboxAddress(Configuration["To:Nick"], Configuration["To:Address"]));
+                                    message.To.Add(new MailboxAddress(Configuration["From:Nick"], Configuration["From:Address"]));
+                                  
                                     //发送方
                                     message.From.Add(new MailboxAddress(Configuration["From:Nick"], Configuration["From:Address"]));
                                     
