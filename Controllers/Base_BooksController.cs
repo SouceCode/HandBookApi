@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HandBookApi.Models;
-
+using Microsoft.Extensions.Caching.Distributed;
 namespace HandBookApi.Controllers
 {
     [Route("api/[controller]")]
@@ -14,10 +14,12 @@ namespace HandBookApi.Controllers
     public class Base_BooksController : ControllerBase
     {
         private readonly HandBookSqlServerContext _context;
+        private IDistributedCache _cache;
 
-        public Base_BooksController(HandBookSqlServerContext context)
+        public Base_BooksController(HandBookSqlServerContext context,IDistributedCache Cache)
         {
             _context = context;
+            _cache =Cache;//构造注入
         }
 
         // GET: api/Base_Books

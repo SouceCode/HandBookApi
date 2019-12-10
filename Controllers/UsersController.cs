@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HandBookApi.Models;
-
+using Microsoft.Extensions.Caching.Distributed;
 namespace HandBookApi.Controllers
 {
     [Route("api/[controller]")]
@@ -14,16 +14,24 @@ namespace HandBookApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly HandBookSqlServerContext _context;
+           private readonly IDistributedCache _cache;
 
-        public UsersController(HandBookSqlServerContext context)
+        public UsersController(HandBookSqlServerContext context,IDistributedCache Cache)
         {
             _context = context;
+             _cache = Cache;//构造注入
         }
 
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
         {
+
+             _cache.SetString("testlink", "1",
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration =  DateTime.Today.AddDays(7)
+            });
             return await _context.Users.ToListAsync();
         }
 
