@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HandBookApi.Models;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+
 namespace HandBookApi.Controllers
 {
     [Route("api/[controller]")]
@@ -26,12 +28,7 @@ namespace HandBookApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
         {
-
-             _cache.SetString("testlink", "1",
-            new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration =  DateTime.Today.AddDays(7)
-            });
+                
             return await _context.Users.ToListAsync();
         }
 
@@ -45,6 +42,19 @@ namespace HandBookApi.Controllers
             {
                 return NotFound();
             }
+
+          //设置
+                  var refreshToken = Guid.NewGuid().ToString("N");
+        var refreshTokenExpiredTime = DateTime.Today.AddDays(7);
+  var cacheKey = $"RefreshToken:{refreshToken}";
+        var cacheValue = JsonConvert.SerializeObject(users);
+             _cache.SetString(cacheKey, cacheValue,
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = refreshTokenExpiredTime
+            });
+//读取
+     var cacheStr = _cache.GetString($"RefreshToken:{refreshToken}");
 
             return users;
         }
