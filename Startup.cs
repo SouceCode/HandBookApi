@@ -55,17 +55,21 @@ namespace HandBookApi
            //定时任务的注入
            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, EmailJob>();
         
+         #region 使用Redis保存Session
+           var redisConn= Configuration["WebConfig:Redis:Connection"];
+           var redisInstanceName = Configuration["WebConfig:Redis:InstanceName"];
+           var sessionOutTime= Configuration.GetValue<int>("WebConfig:SessionTimeOut", 30);
         //注册：Redis服务
         //将Redis分布式缓存服务添加到服务中
          services.AddDistributedRedisCache(options =>
             {
                 //用于连接Redis的配置  Configuration.GetConnectionString("RedisConnectionString")读取配置信息的串
-                options.Configuration = "127.0.0.1:6379";// Configuration.GetConnectionString("RedisConnectionString");
+                options.Configuration = redisConn;// Configuration.GetConnectionString("RedisConnectionString");
                 //Redis实例名test
-                options.InstanceName = "test";
+                options.InstanceName = redisInstanceName;
             });
         }
-
+ #endregion
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
